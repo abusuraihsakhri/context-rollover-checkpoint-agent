@@ -264,19 +264,19 @@ class CheckpointExpiryRetentionEngine:
 class ContextrollovercheckpointagentEnrichmentSuite:
     """Master coordinator executing all enriched domain features."""
     def __init__(self):
-        self.checkpointcompressio = CheckpointCompressionEngine()
-        self.rollovertriggerpolic = RolloverTriggerPoliciesEngine()
-        self.checkpointrestoredif = CheckpointRestoreDiffEngine()
-        self.multiagentcheckpoint = MultiagentCheckpointCoordinationEngine()
-        self.checkpointexpiryrete = CheckpointExpiryRetentionEngine()
+        self.checkpoint_compression = CheckpointCompressionEngine()
+        self.rollover_trigger_policies = RolloverTriggerPoliciesEngine()
+        self.checkpoint_restore_diff = CheckpointRestoreDiffEngine()
+        self.multiagent_checkpoint = MultiagentCheckpointCoordinationEngine()
+        self.checkpoint_expiry_retention = CheckpointExpiryRetentionEngine()
 
     def execute_all(self, primary_val: float = 1.5, secondary_val: float = 0.5) -> Dict[str, Any]:
         results = {}
-        results["CheckpointCompressionEngine"] = self.checkpointcompressio.evaluate(primary_val, secondary_val)
-        results["RolloverTriggerPoliciesEngine"] = self.rollovertriggerpolic.evaluate(primary_val, secondary_val)
-        results["CheckpointRestoreDiffEngine"] = self.checkpointrestoredif.evaluate(primary_val, secondary_val)
-        results["MultiagentCheckpointCoordinationEngine"] = self.multiagentcheckpoint.evaluate(primary_val, secondary_val)
-        results["CheckpointExpiryRetentionEngine"] = self.checkpointexpiryrete.evaluate(primary_val, secondary_val)
+        results["CheckpointCompressionEngine"] = self.checkpoint_compression.evaluate(primary_val, secondary_val)
+        results["RolloverTriggerPoliciesEngine"] = self.rollover_trigger_policies.evaluate(primary_val, secondary_val)
+        results["CheckpointRestoreDiffEngine"] = self.checkpoint_restore_diff.evaluate(primary_val, secondary_val)
+        results["MultiagentCheckpointCoordinationEngine"] = self.multiagent_checkpoint.evaluate(primary_val, secondary_val)
+        results["CheckpointExpiryRetentionEngine"] = self.checkpoint_expiry_retention.evaluate(primary_val, secondary_val)
         return results
 
 # Global instance

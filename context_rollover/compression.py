@@ -79,11 +79,17 @@ class CheckpointCompressor:
 
     def save_checkpoint(self, checkpoint_data: Dict[str, Any], filepath: str) -> CompressionMetadata:
         """Save a checkpoint to disk with optional compression."""
+        # Validate filepath to prevent path traversal
+        if ".." in filepath or filepath.startswith("/"):
+            raise ValueError(f"Invalid filepath: path traversal detected in '{filepath}'")
+
         compressed, metadata = self.compress(checkpoint_data)
         ext = ".gz" if metadata.algorithm == "zlib" else ".json"
         actual_path = filepath if filepath.endswith(ext) else filepath + ext
 
-        os.makedirs(os.path.dirname(actual_path) or ".", exist_ok=True)
+        dir_name = os.path.dirname(actual_path)
+        if dir_name:
+            os.makedirs(dir_name, exist_ok=True)
         with open(actual_path, "wb") as f:
             f.write(compressed)
 
@@ -96,6 +102,11 @@ class CheckpointCompressor:
 
     def load_checkpoint(self, filepath: str) -> Dict[str, Any]:
         """Load a checkpoint from disk, auto-detecting compression."""
+        # Validate filepath to prevent path traversal
+        if ".." in filepath or filepath.startswith("/"):
+            raise ValueError(f"Invalid filepath: path traversal detected in '{filepath}'")
+        if not os.path.isfile(filepath):
+            raise FileNotFoundError(f"Checkpoint file not found: '{filepath}'")
         is_compressed = filepath.endswith(".gz")
         with open(filepath, "rb") as f:
             data = f.read()

@@ -1,0 +1,3 @@
+"""
+Tests suite package initialization.
+"""

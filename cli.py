@@ -4,6 +4,7 @@ Command Line Interface for Context Rollover Checkpoint Agent.
 import argparse
 import csv
 import json
+import os
 import sys
 from agents.models import SystemTaskPayload
 from agents.supervisor import SystemSupervisor
@@ -80,6 +81,13 @@ def main(argv=None):
         return 0
 
     if args.command == "batch":
+        # Validate input filepath
+        if ".." in args.input or args.input.startswith("/"):
+            print(f"Error: Invalid input path '{args.input}': path traversal detected", file=sys.stderr)
+            return 1
+        if not os.path.isfile(args.input):
+            print(f"Error: Input file not found: '{args.input}'", file=sys.stderr)
+            return 1
         with open(args.input, mode="r", encoding="utf-8-sig") as f:
             reader = csv.DictReader(f)
             fieldnames = list(reader.fieldnames or [])
