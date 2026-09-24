@@ -67,3 +67,25 @@ jobs:
           python -m pip install pip-audit
       - name: Audit installed dependencies
         run: pip-audit
+
+  static-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Validate JavaScript syntax
+        run: node --check web/app.js
+      - name: Smoke-test static site
+        run: |
+          test -f index.html
+          test -f web/styles.css
+          test -f web/app.js
+          grep -q 'id="analyzeButton"' index.html
+          grep -q 'web/styles.css' index.html
+          grep -q 'web/app.js' index.html
+          python -m http.server 8080 --directory . >/tmp/context-rollover-pages.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          sleep 1
+          curl --fail --silent http://127.0.0.1:8080/ >/dev/null
+          curl --fail --silent http://127.0.0.1:8080/web/styles.css >/dev/null
+          curl --fail --silent http://127.0.0.1:8080/web/app.js >/dev/null
