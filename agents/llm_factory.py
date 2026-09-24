@@ -1,6 +1,4 @@
-"""
-Inference Engine supporting local Ollama, Claude, OpenAI, and deterministic Mock with Zero-PHI checks.
-"""
+"""Deterministic local mock interface used by the supervisor compatibility layer."""
 from typing import Dict, Any, Optional
 from .base import PHIGuard
 
@@ -11,7 +9,7 @@ class MockLLM:
 
     def invoke(self, prompt: str) -> str:
         PHIGuard.assert_no_phi(prompt)
-        return f"[{self.system_name} Deterministic Verification Engine]: Clinical & scientific analysis verified for query: '{prompt[:60]}...'. Parameters evaluated under Autonomous Agent State Machine & Token Economy RFC."
+        return f"[{self.system_name} mock]: no external model call was made. Query received: '{prompt[:120]}'"
 
 
 class LLMFactory:
@@ -22,10 +20,7 @@ class LLMFactory:
         prov = str(provider).lower()
         if prov in ["mock", "deterministic", "test"]:
             return MockLLM(system_name)
-        elif prov in ["ollama", "local"]:
-            return MockLLM(system_name)
-        elif prov in ["claude", "anthropic"]:
-            return MockLLM(system_name)
-        elif prov in ["openai", "gpt4"]:
-            return MockLLM(system_name)
-        return MockLLM(system_name)
+        raise ValueError(
+            f"Provider '{provider}' is not implemented. "
+            "Use 'mock' for the deterministic local compatibility interface."
+        )
