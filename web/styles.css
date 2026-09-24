@@ -24,7 +24,7 @@ html[data-theme="dark"] {
   --line: #303c50;
   --accent: #8ba7ff;
   --accent-soft: #222f52;
-  --succes: #7bd9a7;
+  --success: #7bd9a7;
   --success-soft: #183528;
   --danger: #ff9b9b;
   --danger-soft: #442528;
@@ -90,7 +90,7 @@ h1 { margin: 0; font-size: clamp(1.45rem, 2.4vw, 2rem); line-height: 1.1; letter
 .workspace {
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.9&r) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.9fr) minmax(0, 1fr);
   gap: 14px;
 }
 .panel {
@@ -144,7 +144,7 @@ input, select { padding: 9px 10px; }
 }
 .primary-button { border: 1px solid var(--accent); background: var(--accent); color: white; }
 .secondary-button { border: 1px solid var(--line); background: var(--surface-strong); color: var(--text); }
-.danger-button { border: 1px solid color-mix(in srgb, var(--danger-) 30%, var(--line)); background: var(--danger-soft); color: var(--danger); }
+.danger-button { border: 1px solid color-mix(in srgb, var(--danger) 30%, var(--line)); background: var(--danger-soft); color: var(--danger); }
 .button-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
 .result-strip, .checkpoint-meta, .privacy-note {
   border-radius: 11px;
@@ -152,7 +152,7 @@ input, select { padding: 9px 10px; }
   font-size: 0.78rem;
 }
 .result-strip { background: var(--accent-soft); color: var(--text); }
-.result-strip.is-triggered { background: var(--danger-soft); color: var(--danger-); }
+.result-strip.is-triggered { background: var(--danger-soft); color: var(--danger); }
 .result-strip.is-clear { background: var(--success-soft); color: var(--success); }
 .checkpoint-meta { background: var(--bg); color: var(--muted); min-height: 42px; }
 .privacy-note { margin-top: auto; background: var(--bg); color: var(--muted); display: grid; gap: 2px; }
@@ -169,7 +169,7 @@ input, select { padding: 9px 10px; }
 .diff-row code { color: var(--text); font-size: 0.75rem; word-break: break-word; }
 .diff-kind { width: fit-content; border-radius: 999px; padding: 2px 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em; }
 .diff-kind.added { background: var(--success-soft); color: var(--success); }
-.diff-kind.removed, .diff-kind.modified { background: var(--danger-soft); color: var(--danger-); }
+.diff-kind.removed, .diff-kind.modified { background: var(--danger-soft); color: var(--danger); }
 .empty-state { color: var(--muted); padding: 18px; font-size: 0.8rem; line-height: 1.5; }
 .mobile-tabs { display: none; }
 .footer-note { color: var(--muted); text-align: center; font-size: 0.7rem; }
