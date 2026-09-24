@@ -58,7 +58,7 @@ def main(argv=None):
         dossier = supervisor.process_task(payload)
         print("=" * 80)
         print(f"  CONTEXT ROLLOVER CHECKPOINT AGENT")
-        print(f"  Domain: Long-Horizon Agent Context & State Architecture | Standard: Autonomous Agent State Machine & Token Economy RFC")
+        print("  Mode: deterministic local compatibility evaluation")
         print(f"  Dossier ID: {dossier.dossier_id} | Urgency: [{dossier.overall_urgency.value}]")
         print("=" * 80)
         for a in dossier.alerts:
