@@ -2,11 +2,14 @@
 Checkpoint Restore Diff for Context Rollover Checkpoint Agent.
 Computes diffs between current state and checkpoint before restore to prevent data loss.
 """
+import copy
 import json
 import time
 from dataclasses import dataclass, field
 from typing import Dict, Any, List, Optional, Set, Tuple
 from enum import Enum
+
+_MISSING = object()
 
 
 class FieldChangeType(str, Enum):
@@ -99,11 +102,11 @@ class RestoreDiffEngine:
                           checkpoint_state: Dict[str, Any],
                           fields_to_restore: List[str]) -> Dict[str, Any]:
         """Restore only specific fields from checkpoint."""
-        result = dict(current_state)
+        result = copy.deepcopy(current_state)
         for field_path in fields_to_restore:
-            value = self._get_nested(checkpoint_state, field_path)
-            if value is not None:
-                self._set_nested(result, field_path, value)
+            value = self._get_nested(checkpoint_state, field_path, default=_MISSING)
+            if value is not _MISSING:
+                self._set_nested(result, field_path, copy.deepcopy(value))
         return result
 
     def format_diff_display(self, diff: RestoreDiff) -> str:
@@ -159,9 +162,9 @@ class RestoreDiffEngine:
             else:
                 changes.append(FieldChange(prefix, FieldChangeType.MODIFIED, current, checkpoint))
 
-    def _get_nested(self, obj: Dict[str, Any], path: str) -> Optional[Any]:
+    def _get_nested(self, obj: Dict[str, Any], path: str, default: Any = None) -> Any:
         parts = path.replace("[", ".").replace("]", "").split(".")
-        current = obj
+        current: Any = obj
         for part in parts:
             if isinstance(current, dict) and part in current:
                 current = current[part]
@@ -170,16 +173,37 @@ class RestoreDiffEngine:
                 if idx < len(current):
                     current = current[idx]
                 else:
-                    return None
+                    return default
             else:
-                return None
+                return default
         return current
 
     def _set_nested(self, obj: Dict[str, Any], path: str, value: Any) -> None:
         parts = path.replace("[", ".").replace("]", "").split(".")
-        current = obj
-        for part in parts[:-1]:
-            if part not in current:
-                current[part] = {}
-            current = current[part]
-        current[parts[-1]] = value
+        current: Any = obj
+        for index, part in enumerate(parts[:-1]):
+            next_is_index = parts[index + 1].isdigit()
+            if isinstance(current, dict):
+                if part not in current or current[part] is None:
+                    current[part] = [] if next_is_index else {}
+                current = current[part]
+            elif isinstance(current, list) and part.isdigit():
+                position = int(part)
+                while len(current) <= position:
+                    current.append(None)
+                if current[position] is None:
+                    current[position] = [] if next_is_index else {}
+                current = current[position]
+            else:
+                raise TypeError(f"Cannot traverse field path '{path}' through '{part}'")
+
+        last = parts[-1]
+        if isinstance(current, dict):
+            current[last] = value
+        elif isinstance(current, list) and last.isdigit():
+            position = int(last)
+            while len(current) <= position:
+                current.append(None)
+            current[position] = value
+        else:
+            raise TypeError(f"Cannot set field path '{path}'")

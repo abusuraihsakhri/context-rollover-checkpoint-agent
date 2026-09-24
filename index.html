@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Browser interface for evaluating rollover triggers, saving local checkpoints, and comparing state changes.">
+  <title>Context Rollover Checkpoint</title>
+  <link rel="stylesheet" href="web/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-block">
+        <span class="eyebrow">Context state utility</span>
+        <h1>Context Rollover Checkpoint</h1>
+        <p>Evaluate rollover triggers, keep local snapshots, and inspect state differences.</p>
+      </div>
+      <div class="top-actions">
+        <a class="icon-button" href="https://github.com/abusuraihsakhri/context-rollover-checkpoint-agent" target="_blank" rel="noopener noreferrer" aria-label="Open repository">GitHub</a>
+        <button class="icon-button" id="themeToggle" type="button" aria-label="Switch color theme">Theme</button>
+      </div>
+    </header>
+
+    <nav class="mobile-tabs" aria-label="Workspace panels">
+      <button class="tab-button is-active" type="button" data-panel-target="state">State</button>
+      <button class="tab-button" type="button" data-panel-target="checkpoint">Checkpoint</button>
+      <button class="tab-button" type="button" data-panel-target="diff">Diff</button>
+    </nav>
+
+    <main class="workspace">
+      <section class="panel is-active" data-panel="state" aria-labelledby="state-title">
+        <div class="panel-heading">
+          <div>
+            <span class="step">01</span>
+            <h2 id="state-title">Current state</h2>
+          </div>
+          <button class="text-button" id="loadExample" type="button">Load example</button>
+        </div>
+
+        <label class="field-label" for="stateInput">JSON state</label>
+        <textarea id="stateInput" spellcheck="false" aria-describedby="stateHelp"></textarea>
+        <p class="helper" id="stateHelp">State is processed only in this browser.</p>
+
+        <div class="threshold-grid">
+          <label>Tokens<input id="tokenThreshold" type="number" min="0" step="1" value="4000"></label>
+          <label>Errors<input id="errorThreshold" type="number" min="0" step="1" value="5"></label>
+          <label>Context %<input id="contextThreshold" type="number" min="0" max="100" step="1" value="85"></label>
+          <label>Turns<input id="turnThreshold" type="number" min="0" step="1" value="20"></label>
+        </div>
+
+        <button class="primary-button" id="analyzeButton" type="button">Analyze rollover</button>
+        <div class="result-strip" id="analysisResult" role="status" aria-live="polite">
+          Ready to analyze.
+        </div>
+      </section>
+
+      <section class="panel" data-panel="checkpoint" aria-labelledby="checkpoint-title">
+        <div class="panel-heading">
+          <div>
+            <span class="step">02</span>
+            <h2 id="checkpoint-title">Checkpoint</h2>
+          </div>
+          <span class="status-bade" id="checkpointCount">0 saved</span>
+        </div>
+
+        <label class="field-label" for="checkpointId">Checkpoint ID</label>
+        <div class="inline-form">
+          <input id="checkpointId" type="text" maxlength="64" value="checkpoint-001" autocomplete="off">
+          <button class="secondary-button" id="saveCheckpoint" type="button">Save</button>
+        </div>
+
+        <label class="field-label" for="checkpointSelect">Saved checkpoints</label>
+        <select id="checkpointSelect"></select>
+
+        <div class="checkpoint-meta" id="checkpointMeta">No checkpoint selected.</div>
+
+        <div class="button-row">
+          <button class="secondary-button" id="downloadCheckpoint" type="button">Download JSON</button>
+          <button class="danger-button" id="deleteCheckpoint" type="button">Delete</button>
+        </div>
+
+        <div class="privacy-note">
+          <strong>Local by design.</strong>
+          <span>Checkpoints are stored in this browser's localStorage. Nothing is uploaded by the app.</span>
+        </div>
+      </section>
+
+      <section class="panel" data-panel="diff" aria-labelledby="diff-title">
+        <div class="panel-heading">
+          <div>
+            <span class="step">03</span>
+            <h2 id="diff-title">Restore diff</h2>
+          </div>
+          <button class="text-button" id="compareButton" type="button">Compare</button>
+        </div>
+
+        <div class="diff-summary" id="diffSummary">
+          <div><span>Added</span><strong id="addedCount">0</strong></div>
+          <div><span>Removed</span><strong id="removedCount">0</strong></div>
+          <div><span>Modified</span><strong id="modifiedCount">0</strong></div>
+        </div>
+
+        <div class="diff-list" id="diffList" role="region" aria-live="polite" aria-label="State differences">
+          <div class="empty-state">Select or save a checkpoint, then compare it with the current state.</div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer-note">
+      Browser UI mirrors the deterministic trigger and diff semantics for convenience. The Python package remains the reference implementation.
+    </footer>
+  </div>
+  <script src="web/app.js" defer></script>
+</body>
+</html>

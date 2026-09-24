@@ -11,12 +11,12 @@ coordinator = StateCheckpointerCoordinator()
 def create_app():
     try:
         from fastapi import FastAPI
-        from pydantic import BaseModel
+        from pydantic import BaseModel, Field
 
         app = FastAPI(
-            title="ContextRollover Sentinel: Long-Horizon Agent State Checkpointer & Delta Restorer",
-            description="Maintains persistent JSONL event journals, calculates semantic diffs between agent turns, and triggers seamless rollover before context limits expire.",
-            version="2.0.0-FRONTIER",
+            title="Context Rollover Checkpoint Agent",
+            description="Local API for deterministic task evaluation and context-rollover utilities.",
+            version="2.0.0",
         )
 
         class TaskRequest(BaseModel):
@@ -26,14 +26,14 @@ def create_app():
             secondary_metric: float = 14.2
             status_descriptor: str = "DISCORDANT_ANOMALY"
             is_critical_flag: bool = True
-            attributes: Dict[str, Any] = {}
+            attributes: Dict[str, Any] = Field(default_factory=dict)
 
         class ChatRequest(BaseModel):
             query: str
 
         @app.get("/health")
         def health():
-            return {"status": "HEALTHY", "system": "context-rollover-checkpoint-agent", "domain": "Autonomous Context Management & State Engines", "version": "2.0.0-FRONTIER"}
+            return {"status": "HEALTHY", "system": "context-rollover-checkpoint-agent", "domain": "Autonomous Context Management & State Engines", "version": "2.0.0"}
 
         @app.post("/api/audit")
         def api_audit(req: TaskRequest):

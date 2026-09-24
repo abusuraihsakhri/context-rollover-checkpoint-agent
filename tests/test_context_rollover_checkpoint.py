@@ -179,6 +179,16 @@ class TestRestoreDiffEngine(unittest.TestCase):
         self.assertEqual(restored["status"], "PAUSED")
         self.assertEqual(restored["counter"], 100)
 
+    def test_selective_restore_preserves_none_and_lists(self):
+        curr = {"items": [{"value": 1}], "nullable": "present"}
+        ckpt = {"items": [{"value": 9}], "nullable": None}
+        restored = self.diff_engine.selective_restore(
+            curr, ckpt, ["items[0].value", "nullable"]
+        )
+        self.assertEqual(restored["items"][0]["value"], 9)
+        self.assertIsNone(restored["nullable"])
+        self.assertEqual(curr["items"][0]["value"], 1)
+
 
 class TestContextRolloverEngineWorkflows(unittest.TestCase):
     """Test suite for integrated ContextRolloverEngine workflows."""
@@ -203,6 +213,14 @@ class TestContextRolloverEngineWorkflows(unittest.TestCase):
         engine = ContextRolloverEngine()
         with self.assertRaises(KeyError):
             engine.restore_checkpoint("NON_EXISTENT", {})
+
+    def test_checkpoint_snapshot_isolated_from_caller_mutation(self):
+        engine = ContextRolloverEngine()
+        state = {"nested": {"value": 1}}
+        engine.create_checkpoint("CKPT-IMMUTABLE", state)
+        state["nested"]["value"] = 99
+        restored, _ = engine.restore_checkpoint("CKPT-IMMUTABLE", state)
+        self.assertEqual(restored["nested"]["value"], 1)
 
 
 class TestFrontierDomainEngineRules(unittest.TestCase):
