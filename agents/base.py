@@ -1,7 +1,4 @@
-"""
-Enterprise Security, PHI Outbound Guard, and HMAC-SHA256 Audit Trail.
-
-"""
+"""Identifier-pattern guard and in-memory HMAC-SHA256 audit trail."""
 import os
 import re
 import json
