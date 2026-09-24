@@ -1,6 +1,4 @@
-"""
-FastAPI REST API Server for ContextRollover Sentinel: Long-Horizon Agent State Checkpointer & Delta Restorer.
-"""
+"""FastAPI server for the context rollover compatibility evaluator."""
 from typing import Dict, Any
 from .models import FrontierPayload
 from .agents import StateCheckpointerCoordinator
@@ -33,7 +31,7 @@ def create_app():
 
         @app.get("/health")
         def health():
-            return {"status": "HEALTHY", "system": "context-rollover-checkpoint-agent", "domain": "Autonomous Context Management & State Engines", "version": "2.0.0"}
+            return {"status": "HEALTHY", "system": "context-rollover-checkpoint-agent", "version": "2.0.0"}
 
         @app.post("/api/audit")
         def api_audit(req: TaskRequest):
