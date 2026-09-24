@@ -8,10 +8,9 @@ version = "2.0.0"
 description = "Checkpoint, trigger, diff, and local task-evaluation utilities for long-running context workflows."
 readme = "README.md"
 authors = [{ name = "Dr. Abu Suraih Sakhri" }]
-license = { text = "MIT" }
+license = "MIT"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 requires-python = ">=3.9"
@@ -35,3 +34,13 @@ context-rollover-checkpoint-agent = "context_rollover.cli:main"
 [project.urls]
 Homepage = "https://github.com/abusuraihsakhri/context-rollover-checkpoint-agent"
 Repository = "https://github.com/abusuraihsakhri/context-rollover-checkpoint-agent.git"
+
+[tool.setuptools]
+packages = ["agents", "context_rollover"]
+py-modules = [
+    "cli",
+    "context_rollover_app",
+    "context_rollover_checkpoint",
+    "enrichment",
+    "simulator",
+]
