@@ -34,7 +34,7 @@ class SystemMetricsCollector:
         avg_latency = self.processing_latency_sum / max(1, self.tasks_total)
         sys_lbl = self.system_name
         p_lines = [
-            "# HELP system_tasks_total Total count of distributed component tasks processed",
+            "# HELP system_tasks_total Total count of tasks processed",
             "# TYPE system_tasks_total counter",
             f'system_tasks_total{{system="{sys_lbl}"}} {self.tasks_total}',
             "",
