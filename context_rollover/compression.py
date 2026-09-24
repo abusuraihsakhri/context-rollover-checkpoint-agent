@@ -127,7 +127,7 @@ class CheckpointCompressor:
         except ValueError as exc:
             shown = original if original is not None else path
             raise ValueError(
-                f"Invalid filepath: path escapes allowed root '{self.base_dir}': '{shown}'"
+                f"Invalid filepath: path traversal or root escape detected for '{shown}' (allowed root: '{self.base_dir}')"
             ) from exc
 
     def get_compression_log(self) -> list:
