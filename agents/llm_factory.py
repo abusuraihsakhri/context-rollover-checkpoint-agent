@@ -13,7 +13,7 @@ class MockLLM:
 
 
 class LLMFactory:
-    """Creates configured LLM client instances with zero-PHI protection."""
+    """Create the deterministic local mock interface."""
 
     @staticmethod
     def create(provider: str = "mock", system_name: str = "Context Rollover Checkpoint Agent"):
