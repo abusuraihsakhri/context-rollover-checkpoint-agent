@@ -1,8 +1,4 @@
-"""
-Data Models & Telemetry Definitions for ContextRollover Sentinel: Long-Horizon Agent State Checkpointer & Delta Restorer.
-Domain: Autonomous Context Management & State Engines
-Standard: Deterministic Agent State Machine v1.0
-"""
+"""Data models for deterministic task-evaluation compatibility workflows."""
 import datetime
 from dataclasses import dataclass, field
 from enum import Enum
@@ -35,7 +31,7 @@ class AgentTelemetryAlert:
     summary: str
     technical_details: str
     actionable_remediation: str
-    standard_reference: str = "Deterministic Agent State Machine v1.0"
+    standard_reference: str = "Built-in deterministic evaluation rules"
     timestamp: str = field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc).isoformat())
 
     def to_dict(self) -> Dict[str, Any]:
