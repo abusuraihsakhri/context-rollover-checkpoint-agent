@@ -5,23 +5,33 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "context-rollover-checkpoint-engine"
 version = "2.0.0"
-description = "ContextRollover Sentinel: Long-Horizon Engine State Checkpointer & Delta Restorer"
+description = "Checkpoint, trigger, diff, and local task-evaluation utilities for long-running context workflows."
 readme = "README.md"
-authors = [{ name = "Dr. Abu Suraih Sakhri", email = "abusuraih@example.com" }]
+authors = [{ name = "Dr. Abu Suraih Sakhri" }]
 license = { text = "MIT" }
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
-    "Topic :: Security/Cryptography",
-    "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 requires-python = ">=3.9"
-dependencies = []
+dependencies = [
+    "pydantic>=2,<3",
+]
+
+[project.optional-dependencies]
+api = [
+    "fastapi>=0.115,<1",
+    "uvicorn>=0.30,<1",
+]
+test = [
+    "pytest>=8,<10",
+]
 
 [project.scripts]
 context-rollover-checkpoint-engine = "context_rollover.cli:main"
+context-rollover-checkpoint-agent = "context_rollover.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/abusuraihsakhri/context-rollover-checkpoint-engine"
-Repository = "https://github.com/abusuraihsakhri/context-rollover-checkpoint-engine.git"
+Homepage = "https://github.com/abusuraihsakhri/context-rollover-checkpoint-agent"
+Repository = "https://github.com/abusuraihsakhri/context-rollover-checkpoint-agent.git"
