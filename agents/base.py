@@ -57,7 +57,7 @@ class PHIGuard:
 class AuditTrail:
     """In-memory HMAC-SHA256 chained audit trail."""
 
-    GENESIS_HASH = self.GENESIS_HASH
+    GENESIS_HASH = "GENESIS_BLOCK_0000000000000000"
     def __init__(self, secret_key: Optional[str] = None):
         resolved_key = secret_key or os.getenv("AUDIT_SECRET_KEY")
         if not resolved_key:
