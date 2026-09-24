@@ -1,6 +1,4 @@
-"""
-Command-Line Interface for ContextRollover Sentinel: Long-Horizon Agent State Checkpointer & Delta Restorer.
-"""
+"""Command-line interface for context rollover utilities."""
 import argparse
 import csv
 import json
@@ -14,7 +12,7 @@ coordinator = StateCheckpointerCoordinator()
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog="context-rollover-checkpoint-agent", description="ContextRollover Sentinel: Long-Horizon Agent State Checkpointer & Delta Restorer")
+    parser = argparse.ArgumentParser(prog="context-rollover-checkpoint-agent", description="Context checkpoint, trigger, and deterministic evaluation utilities")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     # Audit
@@ -53,8 +51,8 @@ def main(argv=None):
         )
         dossier = coordinator.process(payload)
         print("=" * 80)
-        print(f"  CONTEXTROLLOVER SENTINEL: LONG-HORIZON AGENT STATE CHECKPOINTER & DELTA RESTORER")
-        print(f"  Domain: Autonomous Context Management & State Engines | Standard: Deterministic Agent State Machine v1.0")
+        print("  CONTEXT ROLLOVER CHECKPOINT AGENT")
+        print("  Mode: deterministic local compatibility evaluation")
         print(f"  Task: {dossier['task_id']} | Status: [{dossier['overall_status']}] | Total Alerts: {dossier['total_alerts']}")
         print("=" * 80)
         for a in dossier["alerts"]:
@@ -111,10 +109,10 @@ def main(argv=None):
             from .server import create_app
             app = create_app()
             if app:
-                print(f"Starting ContextRollover Sentinel: Long-Horizon Agent State Checkpointer & Delta Restorer on http://{args.host}:{args.port}")
+                print(f"Starting Context Rollover Checkpoint Agent API on http://{args.host}:{args.port}")
                 uvicorn.run(app, host=args.host, port=args.port)
         except ImportError:
-            print("FastAPI / uvicorn not installed. Run 'pip install fastapi uvicorn'")
+            print("FastAPI / uvicorn not installed. Install with: python -m pip install -e \".[api]\"")
             return 1
 
     return 0
