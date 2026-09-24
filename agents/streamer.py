@@ -6,7 +6,7 @@ import asyncio
 from typing import List, Dict, Any
 
 class TelemetryBroadcaster:
-    """Broadcasts distributed component reasoning steps in real-time to active WebSocket clients."""
+    """Broadcast structured events to active WebSocket clients."""
 
     def __init__(self):
         self.active_connections: List[Any] = []
