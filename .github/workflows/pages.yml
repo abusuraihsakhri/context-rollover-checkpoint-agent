@@ -35,3 +35,23 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v5
+
+      - name: Verify live site
+        env:
+          SITE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          base_url="${SITE_URL%/}/"
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            if curl --fail --silent --show-error --location "${base_url}" -o /tmp/index.html; then
+              break
+            fi
+            if [ "$attempt" -eq 10 ]; then
+              echo "Live site did not become reachable: ${base_url}" >&2
+              exit 1
+            fi
+            sleep 3
+          done
+          grep -q 'id="analyzeButton"' /tmp/index.html
+          curl --fail --silent --show-error --location "${base_url}web/styles.css" -o /tmp/styles.css
+          curl --fail --silent --show-error --location "${base_url}web/app.js" -o /tmp/app.js
+          grep -q 'context-rollover-checkpoints-v1' /tmp/app.js
