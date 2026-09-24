@@ -1,7 +1,4 @@
-"""
-Distributed Component Coordination & Executive Hierarchy for ContextRollover Sentinel: Long-Horizon Agent State Checkpointer & Delta Restorer.
-Domain: Autonomous Context Management & State Engines
-"""
+"""Compatibility workers and coordinator for deterministic task evaluation."""
 import uuid
 from typing import Dict, Any, List, Optional
 from .models import FrontierPayload, AgentTelemetryAlert, ExecutionStatus
@@ -60,7 +57,7 @@ class RolloverTriggerAgent:
 
 
 class StateCheckpointerCoordinator:
-    """Executive Coordinator & Air-Gapped Supervisory Intelligence."""
+    """Coordinate the deterministic compatibility workers."""
     def __init__(self):
         self.sub_1 = EventJournalVerifierAgent()
         self.sub_2 = StateDeltaCompressorAgent()
@@ -93,7 +90,7 @@ class StateCheckpointerCoordinator:
             "critical_count": crit_count,
             "warning_count": warn_count,
             "alerts": [a.to_dict() for a in all_alerts],
-            "standard_specification": "Deterministic Agent State Machine v1.0",
+            "standard_specification": "Built-in deterministic evaluation rules",
             "consensus_summary": f"Consensus evaluation completed across 3 sub-agents with status [{status.value}].",
         }
 
@@ -103,8 +100,8 @@ class StateCheckpointerCoordinator:
     def query_supervisory_chat(self, query: str) -> str:
         q = query.strip().lower()
         if "status" in q or "ledger" in q:
-            return f"ContextRollover Sentinel: Long-Horizon Agent State Checkpointer & Delta Restorer currently managing {len(self.execution_ledger)} execution tasks in air-gapped memory."
+            return f"Context Rollover Checkpoint Agent currently holds {len(self.execution_ledger)} task result(s) in process memory."
         elif "standard" in q or "spec" in q:
-            return "Active runtime operating strictly according to Deterministic Agent State Machine v1.0 specifications."
+            return "Active runtime operating strictly according to Built-in deterministic evaluation rules specifications."
         else:
-            return f"ContextRollover Sentinel: Long-Horizon Agent State Checkpointer & Delta Restorer executive coordinator online. Zero-telemetry on-premises surveillance active."
+            return f"Context Rollover Checkpoint Agent compatibility coordinator is ready."
