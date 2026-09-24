@@ -10,6 +10,7 @@ Standard: Deterministic Agent State Machine v1.0
 """
 
 from typing import Dict, Any, List, Optional, Tuple, Set
+import copy
 import json
 import time
 import zlib
@@ -65,10 +66,11 @@ class ContextRolloverEngine:
         state_data: Dict[str, Any],
     ) -> Tuple[bytes, CompressionMetadata]:
         """Snapshot current state, compress, and store."""
-        compressed_bytes, metadata = self.compressor.compress(state_data)
+        snapshot = copy.deepcopy(state_data)
+        compressed_bytes, metadata = self.compressor.compress(snapshot)
         self.checkpoints[checkpoint_id] = {
             "id": checkpoint_id,
-            "data": state_data,
+            "data": snapshot,
             "raw_bytes": compressed_bytes,
             "metadata": metadata.to_dict(),
             "created_at": time.time(),
@@ -85,7 +87,7 @@ class ContextRolloverEngine:
         if checkpoint_id not in self.checkpoints:
             raise KeyError(f"Checkpoint '{checkpoint_id}' not found.")
 
-        target_state = self.checkpoints[checkpoint_id]["data"]
+        target_state = copy.deepcopy(self.checkpoints[checkpoint_id]["data"])
         diff = self.diff_engine.compute_diff(
             current_state=current_state,
             checkpoint_state=target_state,
