@@ -12,8 +12,8 @@ supervisor = SystemSupervisor(model_provider="mock")
 
 app = FastAPI(
     title="Context Rollover Checkpoint Agent API",
-    description="Enterprise Distributed Component Platform (Long-Horizon Agent Context & State Architecture)",
-    version="3.0.0-ENTERPRISE",
+    description="Local API for deterministic task evaluation and audit-trail inspection.",
+    version="2.0.0",
 )
 
 
@@ -23,7 +23,7 @@ class ChatRequest(BaseModel):
 
 @app.get("/health")
 def health():
-    return {"status": "HEALTHY", "service": "context-rollover-checkpoint-agent", "domain": "Long-Horizon Agent Context & State Architecture", "standard": "Autonomous Agent State Machine & Token Economy RFC", "version": "3.0.0-ENTERPRISE"}
+    return {"status": "HEALTHY", "service": "context-rollover-checkpoint-agent", "domain": "Long-Horizon Agent Context & State Architecture", "standard": "Autonomous Agent State Machine & Token Economy RFC", "version": "2.0.0"}
 
 
 @app.get("/metrics")
