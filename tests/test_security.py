@@ -62,6 +62,18 @@ class TestAuditTrailSecurity:
             trail.logs[0]["current_hash"] = "TAMPERED_HASH"
         assert trail.verify_integrity() is False
 
+    def test_audit_trail_detects_last_signature_tampering(self):
+        trail = AuditTrail(secret_key="test-key")
+        trail.log("actor1", "tier1", "EVENT_TYPE", {"data": "value1"})
+        trail.logs[-1]["current_hash"] = "TAMPERED_HASH"
+        assert trail.verify_integrity() is False
+
+    def test_audit_trail_detects_metadata_tampering(self):
+        trail = AuditTrail(secret_key="test-key")
+        trail.log("actor1", "tier1", "EVENT_TYPE", {"data": "value1"})
+        trail.logs[-1]["actor"] = "attacker"
+        assert trail.verify_integrity() is False
+
 
 class TestPathTraversalProtection:
     """Test path traversal prevention in file operations."""
@@ -98,8 +110,8 @@ class TestPathTraversalProtection:
 
     def test_save_and_load_checkpoint_roundtrip(self):
         """save_checkpoint and load_checkpoint should roundtrip correctly."""
-        compressor = CheckpointCompressor(compress_threshold=1)
         with tempfile.TemporaryDirectory() as tmpdir:
+            compressor = CheckpointCompressor(compress_threshold=1, base_dir=tmpdir)
             filepath = os.path.join(tmpdir, "test_checkpoint")
             data = {"agent_id": "A1", "state": "active", "tokens": 1500}
             compressor.save_checkpoint(data, filepath)
