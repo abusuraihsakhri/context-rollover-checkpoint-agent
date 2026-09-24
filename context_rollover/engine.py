@@ -1,15 +1,11 @@
-"""
-Core Algorithmic Engine & Cryptographic / Biological Logic for ContextRollover Sentinel: Long-Horizon Agent State Checkpointer & Delta Restorer.
-Domain: Autonomous Context Management & State Engines
-Standard: Deterministic Agent State Machine v1.0
-"""
+"""Deterministic threshold rules used by the compatibility evaluator."""
 import math
 from typing import Dict, Any, List, Optional
 from .models import FrontierPayload, AgentTelemetryAlert, ExecutionStatus
 
 
 class FrontierDomainEngine:
-    STANDARD = "Deterministic Agent State Machine v1.0"
+    STANDARD = "the built-in deterministic evaluation rules"
     PRIMARY_BOUND = 25.0
     SECONDARY_BOUND = 10.0
 
@@ -18,8 +14,8 @@ class FrontierDomainEngine:
         if value > cls.PRIMARY_BOUND:
             return {
                 "summary": "Primary Domain Boundary Deviation",
-                "details": f"Parameter value ({value:.3f}) exceeds operational threshold ({cls.PRIMARY_BOUND:.1f}) under Deterministic Agent State Machine v1.0.",
-                "remediation": "Engage parameter recalibration and algorithmic verification routine.",
+                "details": f"Parameter value ({value:.3f}) exceeds operational threshold ({cls.PRIMARY_BOUND:.1f}) under the built-in deterministic evaluation rules.",
+                "remediation": "Review the input value and configured threshold before continuing.",
             }
         return None
 
@@ -29,7 +25,7 @@ class FrontierDomainEngine:
             return {
                 "summary": "Critical Domain Condition Triggered",
                 "details": f"Secondary index ({value:.3f}) with CriticalFlag={is_critical} demands prioritized resolution.",
-                "remediation": "Initiate automated fail-safe state machine and telemetry alert dispatch.",
+                "remediation": "Review the critical flag and secondary value before continuing.",
             }
         return None
 
@@ -39,7 +35,7 @@ class FrontierDomainEngine:
         if any(flag in desc_upper for flag in ["VIOLATION", "DISCORDANT", "ANOMALY", "MUTANT", "LEAK"]):
             return {
                 "summary": "Specification / Protocol Anomaly Identified",
-                "details": f"Telemetry status flag '{descriptor}' violates Deterministic Agent State Machine v1.0 conformance matrix.",
-                "remediation": "Execute automated rollback or secondary consensus verification.",
+                "details": f"Telemetry status flag '{descriptor}' violates the built-in deterministic evaluation rules conformance matrix.",
+                "remediation": "Review the descriptor and validate the input before continuing.",
             }
         return None
