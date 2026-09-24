@@ -1,7 +1,4 @@
-"""
-Supervisor Orchestrator & Operations Intelligence for Context Rollover Checkpoint Agent.
-Domain: Long-Horizon Agent Context & State Architecture
-"""
+"""Coordinator for the deterministic compatibility workers."""
 import uuid
 from typing import Dict, Any, List, Optional
 from .base import AuditLogger, ActionExecutor, PHIGuard
@@ -11,7 +8,7 @@ from .llm_factory import LLMFactory
 
 
 class SystemSupervisor:
-    """Master Distributed Component Coordinator for Context Rollover Checkpoint Agent."""
+    """Coordinate worker evaluation and audit recording."""
 
     def __init__(self, model_provider: str = "mock"):
         self.qc_worker = InvariantQCWorker()
@@ -21,7 +18,7 @@ class SystemSupervisor:
         self.dossier_registry: Dict[str, ConsensusDossier] = {}
 
     def process_task(self, payload: SystemTaskPayload, actor: str = "SystemSupervisor") -> ConsensusDossier:
-        # Zero-PHI outbound validation
+        # Heuristic identifier-pattern validation
         PHIGuard.assert_no_phi(payload.task_id)
         PHIGuard.assert_no_phi(payload.target_identifier)
         PHIGuard.assert_no_phi(payload.status_descriptor)
@@ -66,7 +63,7 @@ class SystemSupervisor:
             total_alerts=len(all_alerts),
             critical_alerts_count=crit_count,
             alerts=all_alerts,
-            consensus_summary=f"Multi-agent consensus completed with status [{overall_urgency.value}]. Total alerts: {len(all_alerts)}.",
+            consensus_summary=f"Worker evaluation completed with status [{overall_urgency.value}]. Total alerts: {len(all_alerts)}.",
             audit_hash=audit_entry["current_hash"],
         )
 
@@ -75,5 +72,5 @@ class SystemSupervisor:
 
     def query_supervisory_chat(self, query: str) -> str:
         PHIGuard.assert_no_phi(query)
-        prompt = f"Supervisor inquiry for Context Rollover Checkpoint Agent under Autonomous Agent State Machine & Token Economy RFC: {query}"
+        prompt = f"Supervisor inquiry for Context Rollover Checkpoint Agent: {query}"
         return self.llm.invoke(prompt)
